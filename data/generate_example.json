@@ -1,0 +1,24 @@
+{
+    "tasks": [
+        {
+            "prompt": "# Given a list of integers, return a new list with the elements sorted in ascending order. Do not use the built-in sort command.\n# >>> sort_list {3 1 4 1 5 9}\n# {1 1 3 4 5 9}\nproc sort_list {numbers} {",
+            "canonical_solution": "    set length [llength $numbers]\n    for {set i 0} {$i < $length} {incr i} {\n        for {set j [expr {$i + 1}]} {$j < $length} {incr j} {\n            if {[lindex $numbers $i] > [lindex $numbers $j]} {\n                set temp [lindex $numbers $i]\n                lset numbers $i [lindex $numbers $j]\n                lset numbers $j $temp\n            }\n        }\n    }\n    return $numbers\n}",
+            "test": "proc assert {condition} {\n    if {![uplevel 1 expr $condition]} {\n        return -code error \"Assertion failed\"\n    }\n}\n\nassert {[sort_list {3 1 4 1 5 9}] eq {1 1 3 4 5 9}}\nassert {[sort_list {5 3 9 1 4}] eq {1 3 4 5 9}}\nassert {[sort_list {10 9 8 7 6 5 4 3 2 1}] eq {1 2 3 4 5 6 7 8 9 10}}",
+            "declaration": "proc sort_list {numbers} {",
+            "example_test": "proc assert {condition} {\n    if {![uplevel 1 expr $condition]} {\n        return -code error \"Assertion failed\"\n    }\n}\n\nassert {[sort_list {3 1 4 1 5 9}] eq {1 1 3 4 5 9}}",
+            "prompt_text": "Given a list of integers, return a new list with the elements sorted in ascending order. Do not use the built-in sort command.",
+            "prompt_explain": "Given a list of integers, return a new list with the elements sorted in ascending order. Do not use the built-in sort command.\n>>> sort_list {3 1 4 1 5 9}\n{1 1 3 4 5 9}",
+            "func_title": "proc sort_list {numbers}"
+        },
+        {
+            "prompt": "# Given a string, return the number of vowels in the string. Consider both lowercase and uppercase vowels.\n# >>> count_vowels \"Hello World!\"\n# 3\nproc count_vowels {str} {",
+            "canonical_solution": "    set vowels {a e i o u A E I O U}\n    set count 0\n    foreach chr [split $str \"\"] {\n        if {$chr in $vowels} {\n            incr count\n        }\n    }\n    return $count\n}",
+            "test": "proc assert {condition} {\n    if {![uplevel 1 expr $condition]} {\n        return -code error \"Assertion failed\"\n    }\n}\n\nassert {[count_vowels \"Hello World!\"] == 3}\nassert {[count_vowels \"AEIOUaeiou\"] == 10}\nassert {[count_vowels \"BCDFGHJKLMNPQRSTVWXYZ\"] == 0}",
+            "declaration": "proc count_vowels {str} {",
+            "example_test": "proc assert {condition} {\n    if {![uplevel 1 expr $condition]} {\n        return -code error \"Assertion failed\"\n    }\n}\n\nassert {[count_vowels \"Hello World!\"] == 3}",
+            "prompt_text": "Given a string, return the number of vowels in the string. Consider both lowercase and uppercase vowels.",
+            "prompt_explain": "Given a string, return the number of vowels in the string. Consider both lowercase and uppercase vowels.\n>>> count_vowels \"Hello World!\"\n3",
+            "func_title": "proc count_vowels {str}"
+        }
+    ]
+}
