@@ -10,6 +10,12 @@ The **BTPB (Basic Tcl Problems and Benchmark)** dataset is a collection of **984
 
 
 
+## Motivation
+
+**Tcl (Tool Command Language )** is a high-level, general-purpose, interpreted, dynamic programming language, which is commonly used in rapid prototyping, scripted applications, GUIs, and hardware design flow. Large Language models have become widely used tools in the community to assist in code generation. As the coding capabilities of these models continue to improve, we have noticed that the Tcl language lacks comprehensive **benchmarks** and **training datasets**. Therefore, we have created an **open-source Tcl training dataset and benchmark** set to help the community understand and enhance their LLMs' Tcl capabilities, which is the BTPB dataset.
+
+
+
 ## Tcl For SFT
 
 The `data/tcl_alpaca.json` is the 19990 tasks we translated from code_alpaca, the format follows the alpaca template as:
@@ -92,3 +98,20 @@ We provide 3 scripts for community to use:
    - If you want to generate your own Tcl tasks, modify the **BASE_URL_GEN, API_KEY_GEN, MODEL_GEN, TASK_PER_GEN, ROUND_GEN** and use `python generate_tcl.py`  to run.
    - If you want to test the LLM's Tcl capability, modify the **BASE_URL_TEST, API_KEY_TEST** and use `python test_llm.py` to run benchmarks. You can change the dataset in the code's prepare function.
 
+4. Result
+
+   The LLM's test result will be printed to the stdout and meanwhile wrote to **output/llm/dataset/test.log**.
+
+   An example of it is we use the **tcl_task_mbpp** to benchmark **qwen model** and **llama model** (repeat_times = 2, q5_k):
+
+   ```
+   [2025-01-13 18:45:29]: qwen:7b passed 232 of 652 tasks.
+   
+   [2025-01-13 20:27:30]: qwen:14b passed 304 of 652 tasks.
+   
+   [2025-01-13 22:46:44]: qwen:32b passed 353 of 652 tasks.
+   
+   [2025-01-14 02:39:44]: llama3.1:70b passed 264 of 652 tasks.
+   ```
+
+   
