@@ -18,7 +18,7 @@ The **Open-TTBD (Tcl Training and Benchmark Dataset)** is a collection of **984 
 
 ## Tcl For SFT
 
-The `data/tbd_alpaca.json` is the 19990 tasks we translated from code_alpaca, the format follows the alpaca template as:
+The `data/ttbd_alpaca.json` is the 19990 tasks we translated from code_alpaca, the format follows the alpaca template as:
 
 - `instruction`: `str`, describes the task the model should perform. Each of the 20k instructions is unique.
 - `input`: `str`, optional context or input for the task. For example, when the instruction is "Summarize the following article", the input is the article.
@@ -28,7 +28,7 @@ The `data/tbd_alpaca.json` is the 19990 tasks we translated from code_alpaca, th
 
 ## Tcl For Benchmark
 
-The `data/tbd_benchmark.json` are the tasks we provide to test the LLM's Tcl programming capabilities.
+The `data/ttbd_benchmark.json` are the tasks we provide to test the LLM's Tcl programming capabilities.
 
 You can simply use them with the `test_llm.py` script, which we will talk about in next chapter.
 
@@ -42,7 +42,7 @@ We provide 3 scripts for community to use:
 
 - **generate_tcl.py**: This is the script we used to generate `tcl_task_generated.json`. If you are not satisfied with these tasks, you can generate your own Tcl tasks at any time by configuring the variables in the `.env` file.
 - **task_validate.py**: This is the script we used to validate whether the tasks are legitimate. We converted almost the entire HumanEval and MBPP datasets, but only about **30%** of them passed the assertions. As a result, we retained only these valid tasks, while the ones that failed were considered "low-quality" and discarded.
-- **test_llm.py**: This is the script we used to test LLMs. It utilizes API calls for testing, enabling it to evaluate almost any model without being limited to those that can only be loaded locally using `transformers`. You can configure the variables in the `.env` file to use this script. All tasks, LLM responses, and whether they pass the assertions will be output to the `output/tbd_benchmark` folder.
+- **test_llm.py**: This is the script we used to test LLMs. It utilizes API calls for testing, enabling it to evaluate almost any model without being limited to those that can only be loaded locally using `transformers`. You can configure the variables in the `.env` file to use this script. All tasks, LLM responses, and whether they pass the assertions will be output to the `output/ttbd_benchmark` folder.
 
 
 
