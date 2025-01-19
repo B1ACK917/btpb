@@ -15,9 +15,8 @@ def prepare():
     load_dotenv()
 
     # prepare input/output vars
-    dataset = "generated"
-    tcl_tasks = os.path.join("data", f"tcl_task_{dataset}.json")
-    test_output_dir = os.path.join("output", "llm", dataset)
+    tcl_tasks = os.path.join("data", f"tbd_benchmark.json")
+    test_output_dir = os.path.join("output", "tbd_benchmark")
     log_file = os.path.join(test_output_dir, "test.log")
     os.makedirs(test_output_dir, exist_ok=True)
 
