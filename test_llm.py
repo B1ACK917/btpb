@@ -15,8 +15,8 @@ def prepare():
     load_dotenv()
 
     # prepare input/output vars
-    tcl_tasks = os.path.join("data", f"tbd_benchmark.json")
-    test_output_dir = os.path.join("output", "tbd_benchmark")
+    tcl_tasks = os.path.join("data", f"ttbd_benchmark.json")
+    test_output_dir = os.path.join("output", "ttbd_benchmark")
     log_file = os.path.join(test_output_dir, "test.log")
     os.makedirs(test_output_dir, exist_ok=True)
 
@@ -24,6 +24,9 @@ def prepare():
     repeat_times = 2
     with open(tcl_tasks) as file:
         tasks = json.load(file)
+    # generate: tasks[:363]
+    # humaneval: tasks[363:658]
+    # mbpp: tasks[658:]
     if repeat_times > 1:
         tasks *= repeat_times
 
