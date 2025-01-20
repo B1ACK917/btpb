@@ -12,7 +12,7 @@ The **Open-TTBD (Tcl Training and Benchmark Dataset)** is a collection of **984 
 
 ## Motivation
 
-**Tcl (Tool Command Language )** is a high-level, general-purpose, interpreted, dynamic programming language, which is commonly used in rapid prototyping, scripted applications, GUIs, and hardware design flow. Large Language models have become widely used tools in the community to assist in code generation. As the coding capabilities of these models continue to improve, we have noticed that the Tcl language lacks comprehensive **benchmarks** and **training datasets**. Therefore, we have created an **open-source Tcl training dataset and benchmark** set to help the community understand and enhance their LLMs' Tcl capabilities, which is the BTPB dataset.
+**Tcl (Tool Command Language )** is a high-level, general-purpose, interpreted, dynamic programming language, which is commonly used in rapid prototyping, scripted applications, GUIs, and hardware design flow. Large Language models have become widely used tools in the community to assist in code generation. As the coding capabilities of these models continue to improve, we have noticed that the Tcl language lacks comprehensive **benchmarks** and **training datasets**. Therefore, we have created an **open-source Tcl training dataset and benchmark** set to help the community understand and enhance their LLMs' Tcl capabilities, which is the TTBD dataset.
 
 
 
@@ -52,8 +52,8 @@ We provide 3 scripts for community to use:
 
    ```shell
    # conda
-   conda create -n btpb python=3.12 -y
-   conda activate btpb
+   conda create -n ttbd python=3.12 -y
+   conda activate ttbd
    
    # or venv
    # python -m venv venv
@@ -85,11 +85,19 @@ We provide 3 scripts for community to use:
    ```
 
    - BASE_URL_GEN: The LLM api for generating Tcl tasks.
+   
    - API_KEY_GEN: The api key for use LLM.
+   
    - MODEL_GEN: openai api required the model, for example, **text-davinci-003** for gpt or **deepseek-chat** for deepseek
+   
    - TASK_PER_GEN: How many tasks to generate per round
+   
    - ROUND_GEN: Total generate round, the generated count will be **TASK_PER_GEN * ROUND_GEN**.
+   
+     
+   
    - BASE_URL_TEST: The LLM api for test Tcl capabilities when using `test_llm.py`.
+   
    - API_KEY_TEST: The api key for test (if have).
 
 
