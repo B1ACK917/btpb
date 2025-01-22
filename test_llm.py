@@ -27,6 +27,12 @@ def prepare():
     # generate: tasks[:363]
     # humaneval: tasks[363:658]
     # mbpp: tasks[658:]
+    tasks_map = {
+        "level1": tasks[:363],
+        "level2": tasks[:363:658],
+        "level3": tasks[658:]
+    }
+    target_tasks = ["level1", "level2", "level3"]
     if repeat_times > 1:
         tasks *= repeat_times
 
@@ -41,7 +47,7 @@ def prepare():
         base_url=base_url,
         api_key=api_key,
     )
-    return tasks, client, models, test_output_dir, log_file
+    return tasks_map, target_tasks, client, models, test_output_dir, log_file
 
 
 def generate_with_llm(client, model, task):
@@ -80,27 +86,31 @@ def write_generate(task):
 
 
 def main():
-    tasks, client, models, test_output_dir, log_file = prepare()
+    tasks_map, target_tasks, client, models, test_output_dir, log_file = prepare()
     for model in models:
         print(f"Benchmarking {model}...")
-        passed, test_result = 0, []
-
-        for task in tqdm(tasks):
-            task = generate_with_llm(client, model, task)
-            write_generate(task)
-            success = test_tcl()
-            task.update({"pass": success})
-            passed += 1 if success else 0
-            test_result.append(task)
-        result_str = f"{model} passed {passed} of {len(test_result)} tasks."
-        print(result_str)
-        with open(log_file, "a") as file:
-            now = datetime.now()
-            formatted_time = now.strftime("%Y-%m-%d %H:%M:%S")
-            file.write(f"[{formatted_time}]: {result_str}\n")
+        test_result = []
+        for cur_task_name in target_tasks:
+            print(f"Running on {cur_task_name}...")
+            passed = 0
+            tasks = tasks_map[cur_task_name]
+            for task in tqdm(tasks):
+                task = generate_with_llm(client, model, task)
+                write_generate(task)
+                success = test_tcl()
+                task.update({"pass": success})
+                passed += 1 if success else 0
+                test_result.append(task)
+            result_str = f"{model} passed {passed} of {
+                len(test_result)} on {cur_task_name}."
+            print(result_str)
+            with open(log_file, "a") as file:
+                now = datetime.now()
+                formatted_time = now.strftime("%Y-%m-%d %H:%M:%S")
+                file.write(f"[{formatted_time}]: {result_str}\n")
 
         with open(os.path.join(test_output_dir, f"{model.replace(":", "_")}.json"), "w") as file:
-            file.write(json.dumps(test_result, ensure_ascii=False, indent=4))
+            json.dump(test_result, file, ensure_ascii=False, indent=4)
 
 
 if __name__ == "__main__":
