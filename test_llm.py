@@ -29,12 +29,13 @@ def prepare():
     # mbpp: tasks[658:]
     tasks_map = {
         "level1": tasks[:363],
-        "level2": tasks[:363:658],
+        "level2": tasks[363:658],
         "level3": tasks[658:]
     }
     target_tasks = ["level1", "level2", "level3"]
     if repeat_times > 1:
-        tasks *= repeat_times
+        for k, v in tasks_map.items():
+            tasks_map[k] = v * repeat_times
 
     # prepare llm
     base_url = os.getenv("BASE_URL_TEST")
@@ -92,7 +93,7 @@ def main():
         test_result = []
         for cur_task_name in target_tasks:
             print(f"Running on {cur_task_name}...")
-            passed = 0
+            passed, total = 0, 0
             tasks = tasks_map[cur_task_name]
             for task in tqdm(tasks):
                 task = generate_with_llm(client, model, task)
@@ -100,9 +101,10 @@ def main():
                 success = test_tcl()
                 task.update({"pass": success})
                 passed += 1 if success else 0
+                total += 1
                 test_result.append(task)
-            result_str = f"{model} passed {passed} of {
-                len(test_result)} on {cur_task_name}."
+            result_str = f"{model} passed {
+                passed} of {total} on {cur_task_name}."
             print(result_str)
             with open(log_file, "a") as file:
                 now = datetime.now()
