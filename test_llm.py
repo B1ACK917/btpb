@@ -10,6 +10,14 @@ from dotenv import load_dotenv
 from utils.helper import test_tcl, write_tcl
 from utils.prompts import system_prompt_test, prompt_test
 
+# repeat_times: number of times to repeat the tasks
+repeat_times = 2
+# level1: easy, level2: medium, level3: hard
+target_tasks = ["level1", "level2", "level3"]
+models = [
+    "qwen:7b",
+    "llama3.1:7b",
+]
 
 def prepare():
     load_dotenv()
@@ -21,7 +29,6 @@ def prepare():
     os.makedirs(test_output_dir, exist_ok=True)
 
     # prepare input data
-    repeat_times = 2
     with open(tcl_tasks) as file:
         tasks = json.load(file)
     # generate: tasks[:363]
@@ -32,7 +39,6 @@ def prepare():
         "level2": tasks[363:658],
         "level3": tasks[658:]
     }
-    target_tasks = ["level1", "level2", "level3"]
     if repeat_times > 1:
         for k, v in tasks_map.items():
             tasks_map[k] = v * repeat_times
@@ -40,15 +46,11 @@ def prepare():
     # prepare llm
     base_url = os.getenv("BASE_URL_TEST")
     api_key = os.getenv("API_KEY_TEST")
-    models = [
-        "qwen:7b",
-        "llama3.1:7b",
-    ]
     client = OpenAI(
         base_url=base_url,
         api_key=api_key,
     )
-    return tasks_map, target_tasks, client, models, test_output_dir, log_file
+    return tasks_map, client, test_output_dir, log_file
 
 
 def generate_with_llm(client, model, task):
@@ -87,7 +89,7 @@ def write_generate(task):
 
 
 def main():
-    tasks_map, target_tasks, client, models, test_output_dir, log_file = prepare()
+    tasks_map, client, test_output_dir, log_file = prepare()
     for model in models:
         print(f"Benchmarking {model}...")
         test_result = []

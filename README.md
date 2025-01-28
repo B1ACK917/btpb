@@ -103,23 +103,49 @@ We provide 3 scripts for community to use:
 
 
 3. Run scripts
-   - If you want to generate your own Tcl tasks, modify the **BASE_URL_GEN, API_KEY_GEN, MODEL_GEN, TASK_PER_GEN, ROUND_GEN** and use `python generate_tcl.py`  to run.
-   - If you want to test the LLM's Tcl capability, modify the **BASE_URL_TEST, API_KEY_TEST** and use `python test_llm.py` to run benchmarks.
+   - If you want to generate your own Tcl tasks, modify the **BASE_URL_GEN, API_KEY_GEN, MODEL_GEN, TASK_PER_GEN, ROUND_GEN** and run
+   
+     ``` shell
+     python generate_tcl.py 
+     ```
+   
+   - If you want to test the LLM's Tcl capability, modify the **BASE_URL_TEST, API_KEY_TEST** and run
+   
+     ```shell
+     python test_llm.py
+     ```
+   
 
-4. Result
 
-   The LLM's test result will be printed to the stdout and meanwhile wrote to **output/tbd_benchmark/test.log**.
 
-   An example of it is we use the **mbpp part** ([658:]) to benchmark **qwen model** and **llama model** (repeat_times = 2, q5_k):
+## Eval & Result
+
+The LLM's test result will be printed to the stdout and meanwhile wrote to **output/ttbd_benchmark/test.log**.
+
+An example of it is we use the **ttbd_alpaca.json** to SFT the **qwen** model and use **test_llm.py** to benchmark their Tcl capabilities:
 
    ```
-   [2025-01-13 18:45:29]: qwen:7b passed 232 of 652 tasks.
+   [2025-01-22 21:32:05]: qwen:3b passed 5 of 726 on level1.
+   [2025-01-22 21:54:29]: qwen:3b passed 18 of 590 on level2.
+   [2025-01-22 22:29:51]: qwen:3b passed 20 of 652 on level3.
+   [2025-01-22 22:45:14]: qweb-ttbd-sft:3b passed 396 of 726 on level1.
+   [2025-01-22 23:02:24]: qwen-ttbd-sft:3b passed 270 of 590 on level2.
+   [2025-01-22 23:29:11]: qwen-ttbd-sft:3b passed 168 of 652 on level3.
    
-   [2025-01-13 20:27:30]: qwen:14b passed 304 of 652 tasks.
+   [2025-01-22 23:50:20]: qwen:7b passed 604 of 726 on level1.
+   [2025-01-23 00:15:31]: qwen:7b passed 379 of 590 on level2.
+   [2025-01-23 00:57:49]: qwen:7b passed 237 of 652 on level3.
+   [2025-01-23 01:16:44]: qwen-ttbd-sft:7b passed 705 of 726 on level1.
+   [2025-01-23 01:38:37]: qwen-ttbd-sft:7b passed 478 of 590 on level2.
+   [2025-01-23 02:11:45]: qwen-ttbd-sft:7b passed 285 of 652 on level3.
    
-   [2025-01-13 22:46:44]: qwen:32b passed 353 of 652 tasks.
-   
-   [2025-01-14 02:39:44]: llama3.1:70b passed 264 of 652 tasks.
+   [2025-01-27 18:10:05]: llama3.1:70b passed 695 of 726 on level1.
+   [2025-01-27 19:48:00]: llama3.1:70b passed 468 of 590 on level2.
+   [2025-01-27 22:25:29]: llama3.1:70b passed 273 of 652 on level3.
    ```
 
-   
+   ![eval](./assets/eval.png)
+
+It can be seen that after sft the **qwen-14B** model with our **ttbd_alpaca** dataset, the model can achieve better performance than  **llama3.1-70B** model.
+
+The **qwen-3B** model even achieved a performance improvement of **dozens of times**.
